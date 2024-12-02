@@ -19,11 +19,11 @@ pipeline {
                             echo "Automated update" >> README.md
                             git add .
 
-                            # 변경된 파일 목록 가져오기
-                            CHANGES=$(git diff --name-only --cached)
-                            
-                            # 커밋 메시지에 변경된 파일 이름 포함
-                            git commit -m "Automated update - Changes: $CHANGES" || true
+                            # 현재 시간 가져오기
+                            TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+
+                            # 커밋 메시지에 시간 추가
+                            git commit -m "Automated update - Timestamp: $TIMESTAMP" || true
                             git push origin main
                         else
                             echo "No changes to commit"
