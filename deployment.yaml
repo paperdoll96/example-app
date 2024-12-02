@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.19  # 현재 배포 중인 이미지 버전
+        image: nginx:1.20  # 현재 배포 중인 이미지 버전
         ports:
         - containerPort: 80
 
