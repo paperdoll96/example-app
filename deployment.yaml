@@ -1,11 +1,16 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: example-app
-  labels:
-    app: example-app
 spec:
-  replicas: 2  #3 -> 2 조정
+  replicas: 4
+  strategy:
+    canary:
+      steps:
+      - setWeight: 25
+      - pause: {duration: 30s}
+      - setWeight: 50
+      - pause: {duration: 30s}
   selector:
     matchLabels:
       app: example-app
@@ -16,7 +21,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:latest
+        image: nginx:1.19  # 현재 배포 중인 이미지 버전
         ports:
         - containerPort: 80
 
