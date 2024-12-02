@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Update Code') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'github-password', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
                         git config user.name "paperdoll96"
                         git config user.email "your-email@example.com"
