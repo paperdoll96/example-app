@@ -8,12 +8,18 @@ pipeline {
         }
         stage('Update Code') {
             steps {
-                sh 'echo "Automated update" >> README.md'
-                sh 'git add .'
-                sh 'git commit -m "Automated update" || true'
-                sh 'git push origin main'
+                withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh '''
+                        git config user.name "paperdoll96"
+                        git config user.email "your-email@example.com"
+                        git remote set-url origin https://paperdoll96:$PASSWORD@github.com/paperdoll96/example-app.git
+                        echo "Automated update" >> README.md
+                        git add .
+                        git commit -m "Automated update" || true
+                        git push origin main
+                    '''
+                }
             }
         }
     }
 }
-
