@@ -1,19 +1,19 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: example-app-hpa  # HPA 리소스 이름
+  name: example-app-hpa
 spec:
-  scaleTargetRef:  # 확장 대상 리소스 설정
-    apiVersion: apps/v1
-    kind: Deployment
-    name: example-app  # 대상 Deployment 이름
-  minReplicas: 2  # 최소 Pod 개수
-  maxReplicas: 5  # 최대 Pod 개수
+  scaleTargetRef:
+    apiVersion: argoproj.io/v1alpha1
+    kind: Rollout
+    name: example-app
+  minReplicas: 4                     # 최소 Pod 개수를 Rollout의 초기 설정과 동일하게.
+  maxReplicas: 6                    # 최대 Pod 개수.
   metrics:
-  - type: Resource  # CPU 리소스를 기준으로 확장
+  - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 50  # 평균 CPU 사용률이 50%를 초과하면 확장
+        averageUtilization: 50       # CPU 사용률 50%를 기준으로 확장.
 

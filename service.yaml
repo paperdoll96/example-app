@@ -6,9 +6,15 @@ spec:
   selector:
     app: example-app
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 30007  # 노드 포트를 고정하려면 여기 추가 (옵션)
+      nodePort: 30007  # HTTP 서비스에 대한 NodePort (고정)
+    - name: metrics
+      protocol: TCP
+      port: 9113
+      targetPort: 9113
+      nodePort: 30008  # Nginx Exporter 메트릭에 대한 NodePort (옵션으로 추가)
   type: NodePort
 
