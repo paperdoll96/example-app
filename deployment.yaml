@@ -18,7 +18,6 @@ spec:
     metadata:
       labels:
         app: example-app  # 생성된 Pod에 추가될 레이블.
-        version: v2
     spec:
       containers:
       - name: nginx  # 컨테이너 이름. 여기서는 Nginx.
