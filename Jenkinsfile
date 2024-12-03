@@ -6,7 +6,18 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/paperdoll96/example-app.git'
             }
         }
-        stage('Update Code') {
+        stage('Build and Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh '''
+                        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+                        docker build -t paperdoll96/custom-nginx:1.0 .
+                        docker push paperdoll96/custom-nginx:1.0
+                    '''
+                }
+            }
+        }
+        stage('Update Git Repository') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-password', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
