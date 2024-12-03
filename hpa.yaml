@@ -7,13 +7,25 @@ spec:
     apiVersion: argoproj.io/v1alpha1
     kind: Rollout
     name: example-app
-  minReplicas: 4                     # 최소 Pod 개수를 Rollout의 초기 설정과 동일하게.
-  maxReplicas: 6                    # 최대 Pod 개수.
+  minReplicas: 3
+  maxReplicas: 6
   metrics:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 50       # CPU 사용률 50%를 기준으로 확장.
+        averageUtilization: 50
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 10 # Pod 축소 안정화 대기 시간 (기본 300초에서 10초로 줄임)
+      policies:
+      - type: Percent
+        value: 50      # Pod 개수를 50%씩 줄임
+        periodSeconds: 10  # Pod 축소 간격 10초
+      - type: Pods
+        value: 2       # 한 번에 최대 2개의 Pod 축소
+        periodSeconds: 10
+    scaleUp:
+      stabilizationWindowSeconds: 0 # Pod 증가 시 안정화 대기 시간 제거
 
