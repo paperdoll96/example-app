@@ -1,22 +1,14 @@
-# deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
+# service.yaml
+apiVersion: v1
+kind: Service
 metadata:
-  name: custom-nginx-deployment
+  name: custom-nginx-service
   labels:
     app: custom-nginx
 spec:
-  replicas: 2  # Pod 복제본 수
+  type: LoadBalancer  # 클러스터 외부에서 접근할 수 있도록 LoadBalancer로 설정
+  ports:
+  - port: 80          # 외부에서 접근할 포트
+    targetPort: 80    # 컨테이너 내부에서 노출된 포트
   selector:
-    matchLabels:
-      app: custom-nginx
-  template:
-    metadata:
-      labels:
-        app: custom-nginx
-    spec:
-      containers:
-      - name: custom-nginx
-        image: paperdoll96/custom-nginx:1.0
-        ports:
-        - containerPort: 80
+    app: custom-nginx
