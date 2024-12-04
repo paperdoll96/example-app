@@ -43,6 +43,17 @@ pipeline {
                 }
             }
         }
+        stage('Trigger ArgoCD Sync') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'argocd-token', variable: 'ARGOCD_TOKEN')]) {
+                        sh '''
+                            curl -k -X POST -H "Authorization: Bearer $ARGOCD_TOKEN" \
+                            https://211.183.3.100:30867/api/v1/applications/project-app/sync
+                        '''
+                    }
+                }
+            }
+        }
     }
 }
-
