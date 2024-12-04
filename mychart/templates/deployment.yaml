@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: example-app
-          image: "paperdoll96/keduitlab:purple"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.stableTag }}"
           ports:
             - containerPort: 80
 
@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
         - name: example-app
-          image: "paperdoll96/keduitlab:yellow"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.canaryTag }}"
           ports:
             - containerPort: 80
 
