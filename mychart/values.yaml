@@ -7,9 +7,9 @@ canary:
   replicaCount: 1  # Canary 버전의 Pod 수 (일부 트래픽만 처리)
 
 image:
-  repository: nginx  # Docker 이미지 저장소
-  stableTag: latest  # Stable 버전의 이미지 태그
-  canaryTag: yellow  # Canary 버전의 이미지 태그
+  repository: paperdoll96/keduitlab  # Docker 이미지 저장소
+  stableTag: yellow  # Stable 버전의 이미지 태그
+  canaryTag: pupple  # Canary 버전의 이미지 태그
   pullPolicy: IfNotPresent
 
 service:
