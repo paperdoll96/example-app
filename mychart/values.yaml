@@ -1,9 +1,15 @@
-# 기본 values.yaml 파일에서 설정 추가
-replicaCount: 2
+# Stable 배포 설정
+stable:
+  replicaCount: 3  # Stable 버전의 Pod 수 (대부분의 트래픽을 처리)
+
+# Canary 배포 설정
+canary:
+  replicaCount: 1  # Canary 버전의 Pod 수 (일부 트래픽만 처리)
 
 image:
-  repository: nginx
-  tag: latest
+  repository: nginx  # Docker 이미지 저장소
+  stableTag: latest  # Stable 버전의 이미지 태그
+  canaryTag: yellow  # Canary 버전의 이미지 태그
   pullPolicy: IfNotPresent
 
 service:
@@ -12,7 +18,7 @@ service:
   targetPort: 80
 
 hpa:
-  minReplicas: 2
+  minReplicas: 3
   maxReplicas: 6
   averageUtilization: 50
   behavior:
