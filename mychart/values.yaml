@@ -1,0 +1,34 @@
+# 기본 values.yaml 파일에서 설정 추가
+replicaCount: 2
+
+image:
+  repository: nginx
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 80
+
+hpa:
+  minReplicas: 2
+  maxReplicas: 6
+  averageUtilization: 50
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 10
+      value: 50
+      periodSeconds: 10
+      maxPods: 2
+    scaleUp:
+      stabilizationWindowSeconds: 0
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+
