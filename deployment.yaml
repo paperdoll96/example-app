@@ -1,32 +1,22 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: example-app  # Rollout의 이름. Kubernetes 내에서 리소스를 식별하는데 사용.
+  name: custom-nginx-deployment
+  labels:
+    app: custom-nginx
 spec:
-  replicas: 4  # HPA가 조정할 기본 복제본 수. 여기서는 4개의 Pod를 생성.
-  strategy:
-    canary:  # Canary 배포 전략을 사용. 새로운 버전을 점진적으로 배포.
-      steps:
-      - setWeight: 25  # 전체 트래픽의 25%를 새로운 버전으로 전환.
-      - pause: {duration: 30s}  # 30초 동안 Pause 상태 유지. 새로운 버전의 안정성을 확인.
-      - setWeight: 50  # 전체 트래픽의 50%를 새로운 버전으로 전환.
-      - pause: {duration: 30s}  # 30초 동안 Pause 상태 유지. 안정성 추가 확인.
+  replicas: 2  # Pod 복제본 수
   selector:
-    matchLabels:  # Pod를 선택하기 위한 레이블.
-      app: example-app  # 'app=example-app' 레이블이 붙은 Pod를 대상으로 함.
+    matchLabels:
+      app: custom-nginx
   template:
     metadata:
       labels:
-        app: example-app  # 생성된 Pod에 추가될 레이블.
+        app: custom-nginx
     spec:
       containers:
-      - name: nginx  # 컨테이너 이름. 여기서는 Nginx.
-        image: paperdoll96/custom-nginx:1.0 # Nginx 컨테이너의 이미지 버전. (현재 배포 중인 버전: 1.21)
+      - name: custom-nginx
+        image: paperdoll96/custom-nginx:1.0
         ports:
-        - containerPort: 80  # 컨테이너 내부에서 노출할 포트. 여기서는 HTTP 기본 포트인 80번 포트를 사용.
-        resources:  # HPA가 동작하기 위한 리소스 요청 및 제한 설정.
-          requests:
-            cpu: "100m"  # 최소 100m의 CPU를 요청.
-          limits:
-            cpu: "500m"  # 최대 500m의 CPU를 사용할 수 있음.
-
+        - containerPort: 80
